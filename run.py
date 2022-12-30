@@ -580,7 +580,7 @@ class Session:
 		versi_android = random.randint(4,12)
 		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
 		versi_app = random.randint(410000000,499999999)
-		ugent = f"Mozilla/5.0 (Linux; Android {versi_android}; Nokia_x Build/{str(random.randint(4,10))}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/Nokia_x;FBBD/Nokia_x;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
+		ugent = f"Mozilla/5.0 (Linux; Android {versi_android}; Nokia_X Build/{str(random.randint(4,10))}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/Nokia_X;FBBD/Nokia_X;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
 		return ugent
 		
 if __name__=="__main__":
