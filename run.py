@@ -455,7 +455,7 @@ class Crack:
 							else:
 								pwx.append(nama)
 								pwx.append(depan+"123")
-								pwx.append(depan+"123")
+								pwx.append(depan+"1234")
 								pwx.append(depan+"12345")
 								pwx.append(depan+"123456")
 							belakang = nama.split(" ")[1]
