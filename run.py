@@ -506,9 +506,9 @@ class Crack:
 					open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}")
 				else:continue
 				self.loop+=1
-	except requests.exceptions.ConnectionError:
-		time.sleep(30)
-		self.metode_api(self,user,pwx)
+				except requests.exceptions.ConnectionError:
+				  time.sleep(30)
+				  self.metode_api(self,user,pwx)
 
 	###----------[ PRINT SIMPAN HASIL ]---------- ###
 	def simpan_hasil(self):
