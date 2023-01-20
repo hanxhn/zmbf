@@ -503,7 +503,7 @@ class Crack:
 					tree = Tree(Panel.fit(f"""{K2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
 					tree.add(Panel(f"{K2}{ua}{P2}",style=f"{color_panel}"))
 					prints(tree)
-					open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\)
+					open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}")
 				else:continue
 		self.loop+=1
 	except requests.exceptions.ConnectionError:
